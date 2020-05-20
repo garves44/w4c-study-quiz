@@ -1,11 +1,18 @@
-// Global Variables
+// Question Variables
 const startButton = document.getElementById('start-btn');
 const nextButton = document.getElementById('next-btn');
 const questionContainerEl = document.getElementById('question-container');
 const questionEl = document.getElementById('question');
 const answerButtonEl = document.getElementById('answer-buttons');
 var shuffledQuestions, currentQuestion;
-const counter = 0;
+
+//Timer Variables
+const timerEl = document.getElementById('timer');
+var startTime = 10;
+var counter = 0;
+var currentTime = startTime * 60;
+var timer = setInterval(updateTimer, 1000);
+
 
 //Event Listeners
 startButton.addEventListener('click', startQuiz);
@@ -14,7 +21,7 @@ nextButton.addEventListener('click', () => {
     setNextQuestion();
 })
 
-// Functions
+// Question Function Start
 function startQuiz() {
     startButton.classList.add('hide');
     shuffledQuestions = questions.sort(() => Math.random() - .5);
@@ -81,22 +88,24 @@ function clearStatusClass(element) {
     element.classList.remove('wrong');
 };
 
-function startTimer (duration, display) {
-    var timer = duration, minutes, seconds;
-    setInterval(function() {
-        minutes = parseInt(timer / 60, 10);
-        seconds = parseInt(timer % 60, 10);
-        
-        minutes = minutes < 10 ? "0" + minutes : minutes;
-        seconds = seconds < 10 ? "0" + seconds : seconds;
+// Timer Functions Start
 
-        display.textContent = minutes + ":" + seconds;
+function updateTimer() {
+    var minutes = Math.floor(currentTime / 60);
+    var seconds = currentTime % 60;
 
-        if (timer === 0 || timer < 0) {
-            stopTimer();
-        }
-    }, 1000);
+    seconds = seconds < 10 ? '0' + seconds : seconds;
 
+    timerEl.innerHTML = `Time ${minutes}: ${seconds}`;
+    currentTime--;
+}
+
+function initTimer () {
+
+}
+
+function startTimer (duration, timerEl) {
+   
 }
 
 function resetTimer (duration, display) {
@@ -107,11 +116,7 @@ function stopTimer (duration, display) {
 
 }
 
-function initTimer () {
-    var timeAllowed = 60 * 1;
-        display = document.getElementById('timer');
-    startTimer(timeAllowed, display);
-}
+
 
 //QUESTIONS ARRAY START
 const questions = [{
@@ -415,3 +420,5 @@ const questions = [{
         ]
     },
 ];
+
+initTimer();
