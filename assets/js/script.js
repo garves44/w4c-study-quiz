@@ -5,6 +5,7 @@ const questionContainerEl = document.getElementById('question-container');
 const questionEl = document.getElementById('question');
 const answerButtonEl = document.getElementById('answer-buttons');
 var shuffledQuestions, currentQuestion;
+const counter = 0;
 
 //Event Listeners
 startButton.addEventListener('click', startQuiz);
@@ -79,6 +80,38 @@ function clearStatusClass(element) {
     element.classList.remove('correct');
     element.classList.remove('wrong');
 };
+
+function startTimer (duration, display) {
+    var timer = duration, minutes, seconds;
+    setInterval(function() {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+        
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.textContent = minutes + ":" + seconds;
+
+        if (timer === 0 || timer < 0) {
+            stopTimer();
+        }
+    }, 1000);
+
+}
+
+function resetTimer (duration, display) {
+
+}
+
+function stopTimer (duration, display) {
+
+}
+
+function initTimer () {
+    var timeAllowed = 60 * 1;
+        display = document.getElementById('timer');
+    startTimer(timeAllowed, display);
+}
 
 //QUESTIONS ARRAY START
 const questions = [{
