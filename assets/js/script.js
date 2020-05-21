@@ -7,13 +7,14 @@ const answerButtonEl = document.getElementById('answer-buttons');
 const highscores = document.getElementById('highscores');
 const mainEl = document.getElementById('main-container');
 const leaderboard = document.getElementById('leaderboard');
+const scores = document.getElementById('view-score');
 var shuffledQuestions, currentQuestion;
 var answered = 0;
 var score = 0;
 
 //Timer Variables
 const timerEl = document.getElementById('timer');
-var startTime = 10;
+var startTime = 0;
 var counter = 0;
 var currentTime = startTime * 60;
 
@@ -24,7 +25,8 @@ startButton.addEventListener('click', startQuiz);
 nextButton.addEventListener('click', () => {
     currentQuestion++;
     setNextQuestion();
-})
+});
+scores.addEventListener('click', viewScore);
 
 // Question Function Start
 function startQuiz() {
@@ -33,6 +35,7 @@ function startQuiz() {
     currentQuestion = 0;
     questionContainerEl.classList.remove('hide');
     var timer = setInterval(updateTimer, 1000);
+    resetTimer();
     setNextQuestion();
 
 
@@ -46,24 +49,25 @@ function setNextQuestion() {
 };
 
 function showQuestion(question) {
-    answered++;
     if (answered === 3) {
         endQuiz();
     }
-    if (answered != 3) {
-        questionEl.innerText = question.question
-        question.answers.forEach(answer => {
-            const button = document.createElement('button');
-            button.innerText = answer.text;
-            button.classList.add('btn');
-            if (answer.correct) {
-                button.dataset.correct = answer.correct
-                score++;
-            }
-            button.addEventListener('click', selectAnswer);
-            answerButtonEl.appendChild(button);
-        });
-    }
+    
+    answered++;
+
+    questionEl.innerText = question.question
+    question.answers.forEach(answer => {
+        const button = document.createElement('button');
+        button.innerText = answer.text;
+        button.classList.add('btn');
+        if (answer.correct) {
+            button.dataset.correct = answer.correct
+            score++;
+        }
+        button.addEventListener('click', selectAnswer);
+        answerButtonEl.appendChild(button);
+    });
+
 
 };
 
@@ -77,6 +81,7 @@ function resetQuestion() {
 function selectAnswer(e) {
     const selectedAnswer = e.target;
     const correct = selectedAnswer.dataset.correct;
+    
     setStatusClass(document.body, correct);
     Array.from(answerButtonEl.children).forEach(button => {
         setStatusClass(button, button.dataset.correct)
@@ -87,6 +92,9 @@ function selectAnswer(e) {
         startButton.innerText = 'Restart';
         startButton.classList.remove('hide');
     };
+    if(!correct) {
+        currentTime--;
+    }
 };
 
 function setStatusClass(element, correct) {
@@ -109,20 +117,30 @@ function endQuiz() {
     highscores.classList.remove('hide');
     mainEl.classList.add('hide');
     leaderboard.innerHTML = `Score ` + saveScore;
-    stopTimer();
-
+    window.localStorage.setItem('highscores', saveScore);
+}
+function viewScore() {
+    window.localStorage.getItem('highscores',  saveScore);
+    leaderboard.innerHTML = `Leaderboards ` + saveScore;
 }
 
 // Timer Functions Start
 
 function updateTimer() {
+    
+    
     var minutes = Math.floor(currentTime / 60);
     var seconds = currentTime % 60;
-
+    
     seconds = seconds < 10 ? '0' + seconds : seconds;
-
     timerEl.innerHTML = `Time ${minutes}: ${seconds}`;
     currentTime--;
+    if (minutes <= 0 && seconds <= 0) {
+        timerEl.classList.add('hide');
+        setTimeout(endQuiz, 500);
+    };
+    
+    
 }
 
 function initTimer() {
@@ -134,12 +152,10 @@ function startTimer(duration, timerEl) {
 }
 
 function resetTimer(duration, display) {
-
+    startTime = .25;
+    currentTime = startTime * 60;
 }
 
-function stopTimer(duration, display) {
-    clearInterval(timer);
-}
 
 
 
