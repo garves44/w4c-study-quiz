@@ -108,7 +108,8 @@ function endQuiz() {
     var saveScore = userName + ":" + score;
     highscores.classList.remove('hide');
     mainEl.classList.add('hide');
-    leaderboard.innerHTML = `Points ` + saveScore;
+    leaderboard.innerHTML = `Score ` + saveScore;
+    stopTimer();
 
 }
 
