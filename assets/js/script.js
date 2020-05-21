@@ -11,6 +11,7 @@ const scores = document.getElementById('view-score');
 var shuffledQuestions, currentQuestion;
 var answered = 0;
 var score = 0;
+var hasEnded = false;
 
 //Timer Variables
 const timerEl = document.getElementById('timer');
@@ -27,6 +28,7 @@ nextButton.addEventListener('click', () => {
     setNextQuestion();
 });
 scores.addEventListener('click', viewScore);
+
 
 // Question Function Start
 function startQuiz() {
@@ -49,10 +51,10 @@ function setNextQuestion() {
 };
 
 function showQuestion(question) {
-    if (answered === 3) {
-        endQuiz();
+    if (answered === 5 && hasEnded === false) {
+        timerEl.classList.add('hide');
+        setTimeout(endQuiz, 100);
     }
-    
     answered++;
 
     questionEl.innerText = question.question
@@ -62,7 +64,6 @@ function showQuestion(question) {
         button.classList.add('btn');
         if (answer.correct) {
             button.dataset.correct = answer.correct
-            score++;
         }
         button.addEventListener('click', selectAnswer);
         answerButtonEl.appendChild(button);
@@ -81,7 +82,7 @@ function resetQuestion() {
 function selectAnswer(e) {
     const selectedAnswer = e.target;
     const correct = selectedAnswer.dataset.correct;
-    
+
     setStatusClass(document.body, correct);
     Array.from(answerButtonEl.children).forEach(button => {
         setStatusClass(button, button.dataset.correct)
@@ -92,10 +93,17 @@ function selectAnswer(e) {
         startButton.innerText = 'Restart';
         startButton.classList.remove('hide');
     };
-    if(!correct) {
+    if (!correct) {
         currentTime--;
+        currentTime--;
+        currentTime--;
+    } else {
+        score++;
+        console.log(score);
     }
 };
+
+
 
 function setStatusClass(element, correct) {
     clearStatusClass(element);
@@ -112,35 +120,62 @@ function clearStatusClass(element) {
 };
 
 function endQuiz() {
+    hasEnded = true;
     var userName = prompt("Enter your name to save your score!");
+    while (userName === null) {
+        alert('Invalid input! Try again!');
+        userName = prompt("Enter your name to save your score!");
+    }
     var saveScore = userName + ":" + score;
     highscores.classList.remove('hide');
     mainEl.classList.add('hide');
-    leaderboard.innerHTML = `Score ` + saveScore;
-    window.localStorage.setItem('highscores', saveScore);
+    document.getElementById('top-ten').innerHTML = `Score ` + saveScore;
+    let myScores = localStorage.getItem('highscores');
+    window.localStorage.setItem('highscores', myScores + '_' + saveScore);
 }
+
 function viewScore() {
-    window.localStorage.getItem('highscores',  saveScore);
-    leaderboard.innerHTML = `Leaderboards ` + saveScore;
+    let myScoresStr = localStorage.getItem('highscores');
+    let myScoresArr = myScoresStr.split("_");
+    console.log(myScoresArr);
+    highscores.classList.remove('hide');
+    mainEl.classList.add('hide');
+    timerEl.classList.add('hide');
+    document.getElementById('top-ten').innerHTML = '';
+    
+
+    myScoresArr.shift();
+    for (var i = myScoresArr.length - 10; i < myScoresArr.length; i++) {
+        if (i < 0) {
+            i = 0;
+        };
+
+        var li = document.createElement('li');
+        var text = document.createTextNode(myScoresArr[i]);
+        li.appendChild(text);
+        document.getElementById('top-ten').appendChild(li);
+        
+
+    }
 }
 
 // Timer Functions Start
 
 function updateTimer() {
-    
-    
+
+
     var minutes = Math.floor(currentTime / 60);
     var seconds = currentTime % 60;
-    
+
     seconds = seconds < 10 ? '0' + seconds : seconds;
     timerEl.innerHTML = `Time ${minutes}: ${seconds}`;
     currentTime--;
-    if (minutes <= 0 && seconds <= 0) {
+    if (minutes <= 0 && seconds <= 0 && hasEnded === false) {
         timerEl.classList.add('hide');
-        setTimeout(endQuiz, 500);
+        setTimeout(endQuiz, 100);
     };
-    
-    
+
+
 }
 
 function initTimer() {
@@ -152,8 +187,9 @@ function startTimer(duration, timerEl) {
 }
 
 function resetTimer(duration, display) {
-    startTime = .25;
+    startTime = .50;
     currentTime = startTime * 60;
+    hasEnded = false;
 }
 
 
@@ -461,5 +497,3 @@ const questions = [{
         ]
     },
 ];
-
-initTimer();
