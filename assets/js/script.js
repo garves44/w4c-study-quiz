@@ -11,7 +11,7 @@ const timerEl = document.getElementById('timer');
 var startTime = 10;
 var counter = 0;
 var currentTime = startTime * 60;
-var timer = setInterval(updateTimer, 1000);
+
 
 
 //Event Listeners
@@ -28,6 +28,7 @@ function startQuiz() {
     currentQuestion = 0;
     questionContainerEl.classList.remove('hide');
     setNextQuestion();
+    var timer = setInterval(updateTimer, 1000);
 
 };
 
@@ -113,7 +114,7 @@ function resetTimer (duration, display) {
 }
 
 function stopTimer (duration, display) {
-
+    clearInterval(timer);
 }
 
 
