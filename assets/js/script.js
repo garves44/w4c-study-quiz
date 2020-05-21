@@ -4,7 +4,12 @@ const nextButton = document.getElementById('next-btn');
 const questionContainerEl = document.getElementById('question-container');
 const questionEl = document.getElementById('question');
 const answerButtonEl = document.getElementById('answer-buttons');
+const highscores = document.getElementById('highscores');
+const mainEl = document.getElementById('main-container');
+const leaderboard = document.getElementById('leaderboard');
 var shuffledQuestions, currentQuestion;
+var answered = 0;
+var score = 0;
 
 //Timer Variables
 const timerEl = document.getElementById('timer');
@@ -27,29 +32,38 @@ function startQuiz() {
     shuffledQuestions = questions.sort(() => Math.random() - .5);
     currentQuestion = 0;
     questionContainerEl.classList.remove('hide');
-    setNextQuestion();
     var timer = setInterval(updateTimer, 1000);
+    setNextQuestion();
+
 
 };
 
 function setNextQuestion() {
     resetQuestion();
+
     showQuestion(shuffledQuestions[currentQuestion]);
 
 };
 
 function showQuestion(question) {
-    questionEl.innerText = question.question
-    question.answers.forEach(answer => {
-        const button = document.createElement('button');
-        button.innerText = answer.text;
-        button.classList.add('btn');
-        if (answer.correct) {
-            button.dataset.correct = answer.correct
-        }
-        button.addEventListener('click', selectAnswer);
-        answerButtonEl.appendChild(button);
-    });
+    answered++;
+    if (answered === 3) {
+        endQuiz();
+    }
+    if (answered != 3) {
+        questionEl.innerText = question.question
+        question.answers.forEach(answer => {
+            const button = document.createElement('button');
+            button.innerText = answer.text;
+            button.classList.add('btn');
+            if (answer.correct) {
+                button.dataset.correct = answer.correct
+                score++;
+            }
+            button.addEventListener('click', selectAnswer);
+            answerButtonEl.appendChild(button);
+        });
+    }
 
 };
 
@@ -89,6 +103,15 @@ function clearStatusClass(element) {
     element.classList.remove('wrong');
 };
 
+function endQuiz() {
+    var userName = prompt("Enter your name to save your score!");
+    var saveScore = userName + ":" + score;
+    highscores.classList.remove('hide');
+    mainEl.classList.add('hide');
+    leaderboard.innerHTML = `Points ` + saveScore;
+
+}
+
 // Timer Functions Start
 
 function updateTimer() {
@@ -101,19 +124,19 @@ function updateTimer() {
     currentTime--;
 }
 
-function initTimer () {
+function initTimer() {
 
 }
 
-function startTimer (duration, timerEl) {
-   
-}
-
-function resetTimer (duration, display) {
+function startTimer(duration, timerEl) {
 
 }
 
-function stopTimer (duration, display) {
+function resetTimer(duration, display) {
+
+}
+
+function stopTimer(duration, display) {
     clearInterval(timer);
 }
 
