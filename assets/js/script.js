@@ -6,7 +6,6 @@ const questionEl = document.getElementById('question');
 const answerButtonEl = document.getElementById('answer-buttons');
 const highscores = document.getElementById('highscores');
 const mainEl = document.getElementById('main-container');
-const leaderboard = document.getElementById('leaderboard');
 const scores = document.getElementById('view-score');
 var shuffledQuestions, currentQuestion;
 var answered = 0;
@@ -19,8 +18,6 @@ var startTime = 0;
 var counter = 0;
 var currentTime = startTime * 60;
 
-
-
 //Event Listeners
 startButton.addEventListener('click', startQuiz);
 nextButton.addEventListener('click', () => {
@@ -28,7 +25,6 @@ nextButton.addEventListener('click', () => {
     setNextQuestion();
 });
 scores.addEventListener('click', viewScore);
-
 
 // Question Function Start
 function startQuiz() {
@@ -39,15 +35,11 @@ function startQuiz() {
     var timer = setInterval(updateTimer, 1000);
     resetTimer();
     setNextQuestion();
-
-
 };
 
 function setNextQuestion() {
     resetQuestion();
-
     showQuestion(shuffledQuestions[currentQuestion]);
-
 };
 
 function showQuestion(question) {
@@ -56,7 +48,6 @@ function showQuestion(question) {
         setTimeout(endQuiz, 100);
     }
     answered++;
-
     questionEl.innerText = question.question
     question.answers.forEach(answer => {
         const button = document.createElement('button');
@@ -68,8 +59,6 @@ function showQuestion(question) {
         button.addEventListener('click', selectAnswer);
         answerButtonEl.appendChild(button);
     });
-
-
 };
 
 function resetQuestion() {
@@ -82,7 +71,6 @@ function resetQuestion() {
 function selectAnswer(e) {
     const selectedAnswer = e.target;
     const correct = selectedAnswer.dataset.correct;
-
     setStatusClass(document.body, correct);
     Array.from(answerButtonEl.children).forEach(button => {
         setStatusClass(button, button.dataset.correct)
@@ -103,8 +91,6 @@ function selectAnswer(e) {
     }
 };
 
-
-
 function setStatusClass(element, correct) {
     clearStatusClass(element);
     if (correct) {
@@ -113,12 +99,10 @@ function setStatusClass(element, correct) {
         element.classList.add('wrong')
     };
 };
-
 function clearStatusClass(element) {
     element.classList.remove('correct');
     element.classList.remove('wrong');
 };
-
 function endQuiz() {
     hasEnded = true;
     var userName = prompt("Enter your name to save your score!");
@@ -132,8 +116,7 @@ function endQuiz() {
     document.getElementById('top-ten').innerHTML = `Score ` + saveScore;
     let myScores = localStorage.getItem('highscores');
     window.localStorage.setItem('highscores', myScores + '_' + saveScore);
-}
-
+};
 function viewScore() {
     let myScoresStr = localStorage.getItem('highscores');
     let myScoresArr = myScoresStr.split("_");
@@ -142,8 +125,6 @@ function viewScore() {
     mainEl.classList.add('hide');
     timerEl.classList.add('hide');
     document.getElementById('top-ten').innerHTML = '';
-    
-
     myScoresArr.shift();
     for (var i = myScoresArr.length - 10; i < myScoresArr.length; i++) {
         if (i < 0) {
@@ -154,16 +135,10 @@ function viewScore() {
         var text = document.createTextNode(myScoresArr[i]);
         li.appendChild(text);
         document.getElementById('top-ten').appendChild(li);
-        
-
     }
-}
-
+};
 // Timer Functions Start
-
 function updateTimer() {
-
-
     var minutes = Math.floor(currentTime / 60);
     var seconds = currentTime % 60;
 
@@ -174,27 +149,12 @@ function updateTimer() {
         timerEl.classList.add('hide');
         setTimeout(endQuiz, 100);
     };
-
-
-}
-
-function initTimer() {
-
-}
-
-function startTimer(duration, timerEl) {
-
-}
-
+};
 function resetTimer(duration, display) {
     startTime = .50;
     currentTime = startTime * 60;
     hasEnded = false;
-}
-
-
-
-
+};
 //QUESTIONS ARRAY START
 const questions = [{
         question: 'What is the correct syntax for referring to an external script called "xxx.js"?',
