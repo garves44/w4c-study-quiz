@@ -10,4 +10,4 @@ Javascript Quiz created by Jeremy C. Collins. This is my week four challenge to 
 * Email: **garves44@gmail.com**
 * LinkedIn:[https://www.linkedin.com/in/jeremy-collins-209545194/](https://www.linkedin.com/in/jeremy-collins-209545194/) 
 
-![](./assets/images/javascript-quiz.jpg)
+![] (assets/images/javascript-quiz.jpg)
