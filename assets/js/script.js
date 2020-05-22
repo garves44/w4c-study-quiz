@@ -43,7 +43,7 @@ function setNextQuestion() {
 };
 
 function showQuestion(question) {
-    if (answered === 5 && hasEnded === false) {
+    if (answered === 10 && hasEnded === false) {
         timerEl.classList.add('hide');
         setTimeout(endQuiz, 100);
     }
@@ -154,7 +154,7 @@ function updateTimer() {
 };
 
 function resetTimer(duration, display) {
-    startTime = .50;
+    startTime = 5;
     currentTime = startTime * 60;
     hasEnded = false;
 };

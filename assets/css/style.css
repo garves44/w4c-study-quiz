@@ -190,7 +190,9 @@ nav.navbar .collapse {
 .m1-auto {
     margin-left: auto !important;
 }
-
+.stop-watch {
+    margin-right: 50px;
+}
 .navbar-brand {
     color: #fff;
     font-family: "Montserrat";
