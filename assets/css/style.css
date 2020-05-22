@@ -306,7 +306,7 @@ body.wrong {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0 0 20% 28%;
+    margin: auto;
     padding-top: 10%;
     padding-bottom: 13%;
 }

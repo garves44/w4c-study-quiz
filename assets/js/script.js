@@ -135,8 +135,6 @@ function viewScore() {
         li.appendChild(text);
         document.getElementById('top-ten').appendChild(li);
     }
-    startButton.innerText("Restart");
-    startButton.classList.remove('hide');
 };
 
 // Timer Functions Start
