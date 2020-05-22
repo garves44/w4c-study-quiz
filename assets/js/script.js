@@ -87,7 +87,7 @@ function selectAnswer(e) {
         currentTime--;
     } else {
         score++;
-        console.log(score);
+
     }
 };
 
@@ -99,10 +99,12 @@ function setStatusClass(element, correct) {
         element.classList.add('wrong')
     };
 };
+
 function clearStatusClass(element) {
     element.classList.remove('correct');
     element.classList.remove('wrong');
 };
+
 function endQuiz() {
     hasEnded = true;
     var userName = prompt("Enter your name to save your score!");
@@ -117,10 +119,10 @@ function endQuiz() {
     let myScores = localStorage.getItem('highscores');
     window.localStorage.setItem('highscores', myScores + '_' + saveScore);
 };
+
 function viewScore() {
     let myScoresStr = localStorage.getItem('highscores');
     let myScoresArr = myScoresStr.split("_");
-    console.log(myScoresArr);
     highscores.classList.remove('hide');
     mainEl.classList.add('hide');
     timerEl.classList.add('hide');
@@ -130,13 +132,13 @@ function viewScore() {
         if (i < 0) {
             i = 0;
         };
-
         var li = document.createElement('li');
         var text = document.createTextNode(myScoresArr[i]);
         li.appendChild(text);
         document.getElementById('top-ten').appendChild(li);
     }
 };
+
 // Timer Functions Start
 function updateTimer() {
     var minutes = Math.floor(currentTime / 60);
@@ -150,11 +152,13 @@ function updateTimer() {
         setTimeout(endQuiz, 100);
     };
 };
+
 function resetTimer(duration, display) {
     startTime = .50;
     currentTime = startTime * 60;
     hasEnded = false;
 };
+
 //QUESTIONS ARRAY START
 const questions = [{
         question: 'What is the correct syntax for referring to an external script called "xxx.js"?',
