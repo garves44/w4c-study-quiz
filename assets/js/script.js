@@ -82,9 +82,7 @@ function selectAnswer(e) {
         startButton.classList.remove('hide');
     };
     if (!correct) {
-        currentTime--;
-        currentTime--;
-        currentTime--;
+        currentTime = currentTime - 10;
     } else {
         score++;
 
@@ -137,6 +135,8 @@ function viewScore() {
         li.appendChild(text);
         document.getElementById('top-ten').appendChild(li);
     }
+    startButton.innerText("Restart");
+    startButton.classList.remove('hide');
 };
 
 // Timer Functions Start
@@ -154,7 +154,7 @@ function updateTimer() {
 };
 
 function resetTimer(duration, display) {
-    startTime = 5;
+    startTime = 10;
     currentTime = startTime * 60;
     hasEnded = false;
 };

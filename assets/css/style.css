@@ -306,8 +306,9 @@ body.wrong {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: auto;
-    padding-top: 500px;
+    margin: 0 0 20% 28%;
+    padding-top: 10%;
+    padding-bottom: 13%;
 }
 
 /*------------------------------------------------------*/
